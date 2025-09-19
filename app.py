@@ -4,36 +4,46 @@ from transformers import pipeline
 
 st.set_page_config(page_title="Smart Image Labeler", layout="centered")
 
-# ---- Custom CSS for Modern Blue Card UI ----
+# ---- Force Full Blue Gradient BG + Modern Card UI ----
 st.markdown("""
     <style>
-    body, .main { background: linear-gradient(135deg, #4895ef 0%, #4361ee 100%) !important; }
-    .upload-card {
-        max-width: 440px; margin: 36px auto 0 auto; background: #fff;
-        border-radius: 24px; box-shadow: 0 8px 36px #185ec622;
-        padding: 42px 32px 32px 32px; text-align: center;
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stAppViewContainer"] > .main {
+        background: linear-gradient(120deg, #2965e8 0%, #67b6f4 100%) !important;
+        min-height: 100vh !important;
     }
-    .upload-icon { font-size: 52px; color: #4895ef; margin-bottom: 16px; }
-    .action-btn button {background: #4361ee !important; color:#fff !important; font-weight:600; font-size:1.2em;}
-    .result-tags {display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:28px;}
+    .main > div:first-child {padding-top: 0 !important;}
+    .custom-card {
+        background: #fff; border-radius: 22px;
+        box-shadow: 0 8px 40px #2965e844, 0 2px 12px #2965e844;
+        padding: 48px 34px 40px 34px;
+        margin: 48px auto 48px auto; max-width: 480px; min-height: 430px;
+        display: flex; flex-direction: column; align-items: center;
+    }
+    .upload-icon {
+        font-size: 62px;
+        color: #1d4ed8;
+        background: linear-gradient(135deg, #3b82f6 25%, #6366f1 95%);
+        border-radius: 50%; width: 92px; height: 92px; display:flex; align-items:center; justify-content:center;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 14px #60a5fa33;
+    }
+    .result-tags {display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:28px;}
     .tag-bubble {
-        background: linear-gradient(90deg,#4895ef,#4cc9f0);
-        color: #fff; border-radius: 20px; padding: 8px 18px;
-        font-size: 1.02em; margin: 2px 3px 6px 3px; font-weight: 600; box-shadow: 0 2px 8px #4895ef33;
-        border: none;
+        background: linear-gradient(90deg,#1d4ed8,#60a5fa);
+        color: #fff; border-radius: 20px; padding: 11px 22px;
+        font-size: 1.07em; font-weight: 700; box-shadow: 0 2px 12px #1d4ed822;
+        border: none; letter-spacing: .03em;
     }
-    .footer-note {color:#fff9; margin-top:40px; font-size:0.96em; text-align:center;}
+    .footer-note {color:#fff9; margin-top:38px; font-size:1.01em; text-align:center;}
+    .stButton>button {background:#2563eb !important; color:#fff !important; border-radius:10px !important; font-weight:600;}
+    label, .stSelectbox label, .stTextInput label {font-size:1.1em !important;}
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div style="height:36px"></div>', unsafe_allow_html=True)  # Top space
-
-# --- Card Container ---
-st.markdown('<div class="upload-card">', unsafe_allow_html=True)
-
+st.markdown('<div class="custom-card">', unsafe_allow_html=True)
 st.markdown('<div class="upload-icon">⬆️</div>', unsafe_allow_html=True)
-st.markdown("<h2 style='color:#185ec6; margin-top:0;'>Try Smart Image Tagging!</h2>", unsafe_allow_html=True)
-st.markdown("<p style='color:#222b; margin-top:-8px; font-size:1.05em;'>Upload a picture and see what AI finds. Enter your own tags or use a preset for best results.</p>", unsafe_allow_html=True)
+st.markdown("<h2 style='color:#1d4ed8; margin-top:0; margin-bottom:6px; font-size:2.08em;'>Smart Image Tagger</h2>", unsafe_allow_html=True)
+st.markdown("<div style='color:#222c; font-size:1.13em; margin-bottom:24px;'>Upload an image to see what AI finds. Enter your own tags or use a preset for best results.</div>", unsafe_allow_html=True)
 
 # --- Candidate Labels ---
 presets = {
@@ -52,6 +62,7 @@ else:
 
 # --- Upload Area ---
 uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
+
 st.markdown('</div>', unsafe_allow_html=True)  # End of card
 
 # --- Results Section ---
@@ -71,9 +82,9 @@ if uploaded_file:
             st.markdown(tag_html, unsafe_allow_html=True)
         else:
             st.warning("No confident tags found. Try a different preset or add more relevant tags.")
-else:
-    st.markdown('<div style="height:38px"></div>', unsafe_allow_html=True)
 
 st.markdown('<div class="footer-note">Built by Violetta 💙 | Powered by 🤗 Hugging Face CLIP & Streamlit</div>', unsafe_allow_html=True)
+
+
 
 
